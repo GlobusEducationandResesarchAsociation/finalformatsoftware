@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-
 export default function Form() {
   const [loading, setLoading] = useState(false);
   const backendURL = "https://publication-api.onrender.com/process";
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -15,18 +13,8 @@ export default function Form() {
       return;
     }
     formData.set("doi", `doi:10.46360/cosmos.ahe.${doiNum}`);
-
-    const response = await fetch(backendURL, {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!response.ok) {
-      alert("Error processing document");
-      setLoading(false);
-      return;
-    }
-
+    const response = await fetch(backendURL, { method: "POST", body: formData });
+    if (!response.ok) { alert("Error processing document"); setLoading(false); return; }
     const blob = await response.blob();
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
@@ -34,12 +22,8 @@ export default function Form() {
     link.click();
     setLoading(false);
   };
-
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white shadow-md rounded-2xl p-8 w-full max-w-lg space-y-4"
-    >
+    <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-2xl p-8 w-full max-w-lg space-y-4">
       <h2 className="text-xl font-semibold text-blue-600 border-b pb-2">Header</h2>
       <label className="block text-gray-700 font-medium">Journal Name</label>
       <input type="text" name="journal_name" className="w-full p-2 border rounded-lg" required />
